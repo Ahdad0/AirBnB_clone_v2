@@ -19,11 +19,12 @@ class FileStorage:
         if cls is None:
             return self.__objects
         else:
+            di = {}
             di = self.__objects
 
             for k in di:
                 res = k.split('.')
-                if (res[0] == cls.__name__):
+                if res[0] == cls.__name__:
                     di[k] = self.__objects[k]
             return di
 
