@@ -8,6 +8,17 @@ from os import getenv
 from sqlalchemy.orm import relationship
 
 
+place_amenity = Table("place_amenity", Base.metadata,
+                      Column("place_id", String(60),
+                             ForeignKey("places.id"),
+                             primary_key=True,
+                             nullable=False),
+                      Column("amenity_id", String(60),
+                             ForeignKey("amenities.id"),
+                             primary_key=True,
+                             nullable=False))
+
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
@@ -27,6 +38,9 @@ class Place(BaseModel, Base):
     if getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship("Review", cascade='all, delete, delete-orphan',
                                backref="place")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False,
+                                 back_populates="place_amenities")
     else:
         @property
         def reviews(self):
@@ -43,3 +57,14 @@ class Place(BaseModel, Base):
                 if (elem.place_id == self.id):
                     res.append(elem)
             return (res)
+
+        @property
+        def amenities(self):
+            """returns list of amenity"""
+            return self.amenity_ids
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            """appends amenity ids"""
+            if type(obj) == Amenity and obj.id not in self.amenity_ids:
+                self.amenity_ids.append(obj.id)
