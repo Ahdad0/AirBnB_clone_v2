@@ -25,8 +25,9 @@ class BaseModel:
             self.updated_at = datetime.now()
         else:
             for k, v in kwargs.items():
-                if k == ('created_at', 'updated_at'):
-                    v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
+                if k in ('created_at', 'updated_at'):
+                    if isinstance(v, str):
+                        v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
                 if k != '__class__':
                     setattr(self, k, v)
             if 'created_at' not in kwargs:
@@ -41,6 +42,10 @@ class BaseModel:
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
+    def __repr__(self):
+        """return a string representaion"""
+        return self.__str__()
+
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         self.updated_at = datetime.now()
@@ -50,7 +55,7 @@ class BaseModel:
     def to_dict(self):
         """Convert instance into dict format"""
         dictionary = dict(self.__dict__)
-        if '_sa_instance_state' in dictionary.keys():
+        if '_sa_instance_state' in dictionary:
             del dictionary['_sa_instance_state']
         dictionary['__class__'] = str(type(self).__name__)
         dictionary['created_at'] = self.created_at.isoformat()
