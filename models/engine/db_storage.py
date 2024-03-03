@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Database Storage"""
 import os
 from models.base_model import BaseModel, Base
 from models.state import State
@@ -22,7 +23,7 @@ class DBStorage:
         env = os.getenv('HBNB_ENV')
         db_name = os.getenv('HBNB_MYSQL_DB')
         pwd = os.getenv('HBNB_MYSQL_PWD')
-        DB = "mysql+mysqldb://{}:{}@{}:3306/{}".format(
+        DB = "mysql+mysqldb://{}:{}@{}/{}".format(
             user, pwd, host, db_name)
         self.__engine = create_engine(DB, pool_pre_ping=True)
 
