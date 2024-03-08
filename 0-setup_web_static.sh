@@ -3,8 +3,8 @@
 
 
 if ! [ -x "$(command -v nginx)" ]; then
-	sudo apt update
-	sudo apt install nginx -y
+	apt update -y
+	apt install -y nginx
 fi
 
 if [ ! -d "/data" ]; then
