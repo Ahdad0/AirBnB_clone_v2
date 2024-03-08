@@ -25,7 +25,14 @@ if [ ! -d "/data/web_static/releases/test" ]; then
 	sudo mkdir /data/web_static/releases/test
 fi
 
-echo "Hello World!" | tee /data/web_static/releases/test/index.htm
+echo "<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <p>Nginx server test</p>
+  </body>
+</html>" | tee /data/web_static/releases/test/index.html
 
 if [ -d "/data/web_static/current" ]; then
 	rm -rf /data/web_static/current
