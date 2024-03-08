@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 # sets up your web servers for the deployment of web_static
-
-
 if ! [ -x "$(command -v nginx)" ]; then
 	apt update -y
 	apt install -y nginx
